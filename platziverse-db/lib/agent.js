@@ -16,7 +16,7 @@ module.exports = function setupAgent (AgentModel) {
     }
 
     const result = await AgentModel.create(agent)
-    return result.toJson()
+    return result.toJSON()
   }
 
   function findById (id) {

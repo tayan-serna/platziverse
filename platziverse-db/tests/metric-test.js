@@ -74,7 +74,7 @@ test.beforeEach(async () => {
   // Model findAll Stub
   MetricStub.create = sandbox.stub()
   MetricStub.create.withArgs(newMetric).returns(Promise.resolve({
-    toJson () { return newMetric }
+    toJSON () { return newMetric }
   }))
   
   // Model findAll Stub

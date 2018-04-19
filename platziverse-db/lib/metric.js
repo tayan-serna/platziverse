@@ -23,7 +23,7 @@ module.exports = function setupMetric (MetricModel, AgentModel) {
         type
       },
       limit: 20,
-      order: [[ 'created', 'DESC' ]],
+      order: [[ 'createdAt', 'DESC' ]],
       include: [{
         attributes: [],
         model: AgentModel,
@@ -31,7 +31,8 @@ module.exports = function setupMetric (MetricModel, AgentModel) {
           uuid
         },
         raw: true
-      }]
+      }],
+      raw: true
     })
   }
 
@@ -43,7 +44,7 @@ module.exports = function setupMetric (MetricModel, AgentModel) {
     if (agent) {
       Object.assign(metric, { agentId: agent.id })
       const result = await MetricModel.create(metric)
-      return result.toJson()
+      return result.toJSON()
     }
   }
 

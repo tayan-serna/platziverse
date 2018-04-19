@@ -7,16 +7,19 @@ const db = require('./')
 
 const prompt = inquirer.createPromptModule()
 async function setup () {
-  const answer = await prompt([
-    {
-      type: 'confirm',
-      name: 'setup',
-      message: 'This will destroy your database, are you sure?'
+  const shouldPass = process.argv.filter(val => val === '--yes' || val === '-y')
+  if (!shouldPass.length) {
+    const answer = await prompt([
+      {
+        type: 'confirm',
+        name: 'setup',
+        message: 'This will destroy your database, are you sure?'
+      }
+    ])
+  
+    if (!answer.setup) {
+      return console.log('Nothing happened :)')
     }
-  ])
-
-  if (!answer.setup) {
-    return console.log('Nothing happened :)')
   }
 
   const config = {

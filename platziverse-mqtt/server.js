@@ -6,7 +6,7 @@ const redis = require('redis')
 const chalk = require('chalk')
 const db = require('platziverse-db')
 const dbConfig = require('platziverse-db-setup')({ setup: false })
-const { parsePayload } = require('./utils')
+const { parsePayload } = require('platziverse-utils')
 
 const backend = {
   type: 'redis',
@@ -98,16 +98,10 @@ server.on('published', async (packet, client) => {
         }
 
         // Store Metrics
-        for (let metric of payload.metrics) {
-          let m
-
-          try {
-            m = await Metric.create(agent.uuid, metric)
-          } catch (e) {
-            return handleError(e)
-          }
-
-          debug(`Metric ${m.id} saved on agent ${agent.uuid}`)
+        try {
+          await Promise.all(payload.metrics.map(metric => Metric.create(agent.uuid, metric)))
+        } catch (e) {
+          return handleError(e)
         }
       }
       break

@@ -1,0 +1,20 @@
+{
+  "name": "platziverse-utils",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple IoT Platform - utils",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tayan-serna/platziverse.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tayan-serna/platziverse/issues"
+  },
+  "homepage": "https://github.com/tayan-serna/platziverse#readme"
+}

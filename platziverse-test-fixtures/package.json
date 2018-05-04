@@ -1,0 +1,10 @@
+{
+  "name": "platziverse-test-fixtures",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple IoT Platform - test fixtures",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "MIT"
+}

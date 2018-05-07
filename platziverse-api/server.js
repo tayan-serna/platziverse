@@ -21,6 +21,12 @@ app.use((err, req, res, next) => {
   if (err.message.match(/not found/)) {
     return res.status(404).send({ error: err.message })
   }
+  if (err.message.match(/Not Authorized/)) {
+    return res.status(401).send({ error: err.message })
+  }
+  if (err.message.match(/Permission denied/)) {
+    return res.status(403).send({ error: err.message })
+  }
 
   res.status(500).send({ error: err.message })
 })

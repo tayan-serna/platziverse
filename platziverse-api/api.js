@@ -3,6 +3,8 @@
 const debug = require('debug')('platziverse:api:route')
 const express = require('express')
 const asyncify = require('express-asyncify')
+const auth  = require('express-jwt')
+const guard = require('express-jwt-permissions')()
 const db = require('platziverse-db')
 
 const config = require('./config')
@@ -26,21 +28,36 @@ api.use('*', async (req, res, next) => {
   next()
 })
 
-api.get('/agents', async (req, res, next) => {
+api.get('/agents', auth(config.auth), guard.check(['agents:read']), async (req, res, next) => {
   debug('A request has come to /agents')
+
+  const { user } = req
+
+  if (!user || !user.username) {
+    return next(new Error('Not Authorized'))
+  }
 
   let agents = []
 
   try {
-    agents = await Agent.findConnected()
+    if (user.admin) {
+      agents = await Agent.findConnected()
+    } else {
+      agents = await Agent.findByUserName(user.username)
+    }
   } catch (e) {
     next(e)
   }
   res.send(agents)
 })
 
-api.get('/agent/:uuid', async (req, res, next) => {
+api.get('/agent/:uuid', auth(config.auth), guard.check(['agents:read']), async (req, res, next) => {
   const { uuid } = req.params
+  const { user } = req
+
+  if (!user || !user.username) {
+    return next(new Error('Not Authorized'))
+  }
 
   debug(`A request has come to /agent/${uuid}`)
 
@@ -58,8 +75,13 @@ api.get('/agent/:uuid', async (req, res, next) => {
   res.send(agent)
 })
 
-api.get('/metrics/:uuid', async (req, res, next) => {
+api.get('/metrics/:uuid', auth(config.auth), guard.check(['metrics:read']), async (req, res, next) => {
   const { uuid } = req.params
+  const { user } = req
+
+  if (!user || !user.username) {
+    return next(new Error('Not Authorized'))
+  }
 
   debug(`A request has come to /metrics/${uuid}`)
 
@@ -78,8 +100,13 @@ api.get('/metrics/:uuid', async (req, res, next) => {
   res.send(metrics)
 })
 
-api.get('/metrics/:uuid/:type', async (req, res, next) => {
+api.get('/metrics/:uuid/:type', auth(config.auth), guard.check(['metrics:read']), async (req, res, next) => {
   const { uuid, type } = req.params
+  const { user } = req
+
+  if (!user || !user.username) {
+    return next(new Error('Not Authorized'))
+  }
 
   debug(`A request has come to /metrics/${uuid}/${type}`)
 

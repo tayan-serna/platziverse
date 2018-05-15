@@ -49,7 +49,9 @@ server.on('clientDisconnected', async client => {
     server.publish({
       topic: 'agent/disconnected',
       payload: JSON.stringify({
-        uuid: agent.uuid
+        agent: {
+          uuid: agent.uuid
+        }
       })
     })
     debug(`Client (${client.id}) associated to Agent (${agent.uuid}) marked as disconnected`)
@@ -88,11 +90,13 @@ server.on('published', async (packet, client) => {
           server.publish({
             topic: 'agent/connected',
             payload: JSON.stringify({
-              uuid: agent.uuid,
-              name: agent.name,
-              hostname: agent.hostname,
-              pid: agent.pid,
-              connected: agent.connected
+              agent:{
+                uuid: agent.uuid,
+                name: agent.name,
+                hostname: agent.hostname,
+                pid: agent.pid,
+                connected: agent.connected
+              }
             })
           })
         }
